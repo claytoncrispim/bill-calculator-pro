@@ -4,7 +4,7 @@ An intuitive and responsive single-page application designed to help users easil
 
 ## Live Demo
 
-*[Link to be added later]*
+*[View Live Demo](https://claytoncrispim.github.io/bill-calculator-pro/)*
 
 ## Screenshot
 
