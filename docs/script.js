@@ -1,138 +1,102 @@
 /**
  * @file script.js
- * @description Main JavaScript file for the Bill Calculator application. This file handles all application state, DOM manipulation, event handling, and core logic.
+ * @description Main JavaScript file for the Bill Calculator application.
+ * This file primarily handles DOM manipulation, event handling,
+ * and orchestrates interactions with the BillManager for all
+ * data-related operations. It acts as the UI layer.
  * @author [Clayton Crispim]
- * @version 9.0.0
+ * @version 9.0.0 (Refactored with BillManager for OOP state management)
  * @date 2025-06-26
  *
  * Distributed under the MIT License.
  */
 
 // --- IMPORTS ---
+// Import the Bill class for creating new bill objects.
+// This is used when a new bill is submitted from the form.
 import Bill from "./components/Bill.js";
 
+// Import the BillManager class, which now encapsulates all bill data,
+// persistence (localStorage), and core business logic (CRUD, filtering, sorting, totals).
+import BillManager from "./components/BillManager.js";
 
-// --- STATE ---
-// The single source of truth for the application's data.
 
-/**
- * The main array holding all bill objects.
- * It is initialized by loading data from localStorage on startup.
- */
-let bills = loadBillsFromLocalStorage();
-
-/**
- * The current filter applied to the list.
- *  * @type {'All' | 'Paid' | 'Unpaid' | 'Pending'}
- */
-let currentFilter = 'All';
-
-/**
- * The current sort order being applied to the list.
- *  @type {'default' | 'amount-high-low' | 'amount-low-high' | 'name-az'}
- * */
-let currentSort = 'default';
+// --- STATE MANAGEMENT INSTANCE ---
+// The single source of truth for the application's bill data is now
+// an instance of the BillManager class. It loads bills on creation.
+const appBillManager = new BillManager();
 
 
 // --- DOM ELEMENTS ---
-// Caching references to DOM elements to avoid repeated queries in our functions.
+// Caching references to frequently used DOM elements to avoid repeated
+// queries and improve performance.
 
-// Main form and bill list container
+// Main form element where new bills are added.
 const billForm = document.querySelector('#bill-form');
+// Container where the list of bill cards will be rendered.
 const billsListContainer = document.querySelector('#bills-list');
 
-// Display elements for categorized totals
+// Display elements for categorized financial totals.
 const totalPaidDisplay = document.querySelector('#total-paid');
 const totalPendingDisplay = document.querySelector('#total-pending');
 const totalUnpaidDisplay = document.querySelector('#total-unpaid');
 
-// Form controls for filtering and sorting
+// Form controls for user interaction (filtering and sorting).
 const filterButtonsContainer = document.querySelector('#filter-buttons-container');
 const billTypeSelect = document.querySelector('#billType');
 const sortBySelect = document.querySelector('#sort-by');
 
-// Containers for conditional fields in the main form
+// Containers for input fields that appear conditionally based on bill type.
 const streamingNameContainer = document.querySelector('#streamingName-container');
 const otherTypeContainer = document.querySelector('#otherType-container');
 
-// Elements related to the "Edit Bill" modal
+// Elements related to the "Edit Bill" modal window.
 const editModalEl = document.querySelector('#editBillModal');
 const editBillForm = document.querySelector('#edit-bill-form');
-const editBillIdInput = document.querySelector('#edit-bill-id');
+const editBillIdInput = document.querySelector('#edit-bill-id'); // Hidden input to store bill ID
 const editAmountInput = document.querySelector('#edit-amount');
 const editStatusSelect = document.querySelector('#edit-status');
 
 /**
- * A JavaScript instance of the Bootstrap Modal class, created fron our modal element.
- * We use this instance to programmatically control the modal (e.g., `editModal.show()`).
+ * A JavaScript instance of the Bootstrap Modal class.
+ * This instance is used to programmatically control the modal's behavior
+ * (e.g., showing or hiding it).
  */
 const editModal = new bootstrap.Modal(editModalEl);
 
 
-// --- FUNCTIONS ---
-/**
- * Saves the current 'bills' array to the browser's localStorage.
- * The array is converted to a JSON string because localStorage can only store strings.
- */
-function saveBillsToLocalStorage() {
-  const billsJson = JSON.stringify(bills);
-  localStorage.setItem('myBills', billsJson);
-}
+// --- FUNCTIONS FOR UI RENDERING AND EVENT HANDLING ---
 
 /**
- * Loads bills from localStorage, parses the JSON string back into an array,
- * and returns it. If no bills are found in localStorage, it returns an empty array.
- * @returns {Array<object>} The array of bill objects from storage.
- */
-function loadBillsFromLocalStorage() {
-  const savedBillsJson = localStorage.getItem('myBills');
-  return savedBillsJson ? JSON.parse(savedBillsJson) : [];
-}
-
-/**
- * Renders the list of bills to the page, applying the current filter and sort order.
+ * Renders the list of bills to the page. It retrieves the filtered and sorted
+ * list of bills directly from the BillManager, ensuring the display
+ * reflects the current application state.
  */
 function renderBills() {
+  // Define status-to-color mapping for Bootstrap badges.
   const statusColors = {
     Paid: 'success',
     Unpaid: 'danger',
     Pending: 'warning',
   };
 
-  // 1. FILTERING: Create a temporary array based on the current filter.
-  let filteredBills;
-  if (currentFilter === 'All') {
-    filteredBills = bills;
-  } else {
-    filteredBills = bills.filter(bill => bill.status === currentFilter);
-  }
+  // Delegate filtering and sorting logic to the BillManager.
+  // The manager's internal filter and sort states are used automatically.
+  const billsToDisplay = appBillManager.getDisplayBills();
 
-  // 2. SORTING: Sort the new 'filteredBills' array.
-  // A copy is created with [...filteredBills] to ensure the original bills array order is preserved.
-  const sortedAndFilteredBills = [...filteredBills].sort((a, b) => {
-    switch (currentSort) {
-      case 'amount-high-low':
-        return b.amount.value - a.amount.value;
-      case 'amount-low-high':
-        return a.amount.value - b.amount.value;
-      case 'name-az':
-        const nameA = a.name || a.type;
-        const nameB = b.name || b.type;
-        return nameA.localeCompare(nameB);
-      default:
-        return 0; // 'default' case applies no sorting.
-    }
-  });
-
-  // 3. RENDER: The rest of the function now uses the final 'sortedAndFilteredBills' array.
+  // Clear any previously rendered bills from the container.
   billsListContainer.innerHTML = '';
 
-  if (sortedAndFilteredBills.length === 0) {
-    billsListContainer.innerHTML = '<p class="text-center text-muted">No bills to display.</p>';
+  // Display a message if there are no bills to show after filtering/sorting.
+  if (billsToDisplay.length === 0) {
+    billsListContainer.innerHTML = '<p class="text-center text-muted">' +
+                                   'No bills to display.</p>';
     return;
   }
 
-  const billsHtml = sortedAndFilteredBills.map(bill => {
+  // Map through the bills to display and generate HTML for each card.
+  const billsHtml = billsToDisplay.map(bill => {
+    // Determine the display name (specific name if available, otherwise bill type).
     const displayName = bill.name || bill.type;
     return `
       <div class="card mb-3">
@@ -159,51 +123,38 @@ function renderBills() {
         </div>
       </div>
     `;
-  }).join('');
+  }).join(''); // Join all individual bill HTML strings into one for efficient DOM injection.
 
   billsListContainer.innerHTML = billsHtml;
 }
 
 
 /**
- * Calculates totals for each status category (Paid, Unpaid, Pending)
- * and renders them ton the appropriate display elements on the page.
+ * Calculates and renders total amounts for each status category (Paid, Unpaid, Pending).
+ * It retrieves these totals directly from the BillManager.
  */
 function calculateAndRenderTotal() {
-  // 1. Set up the initial shape of our totals object.
-  const initialTotals = {
-    Paid: 0,
-    Unpaid: 0,
-    Pending: 0
-  };
+  // Delegate the calculation of totals to the BillManager instance.
+  const totals = appBillManager.getTotalsByStatus();
 
-  // 2. Use .reduce() to iterate through all bills and sum amounts into the correct category.
-  const totals = bills.reduce((acc, bill) => {
-    // Check if the status is a valid key in our accumulator object.
-    if (acc.hasOwnProperty(bill.status)) {
-      acc[bill.status] += bill.amount.value;
-    }
-    return acc; // Return the updated accumulator for the next iteration.
-  }, initialTotals);
-
-  // 3. Update the text content for each total display element on the page.
+  // Update the text content of the dedicated display elements with formatted totals.
   totalPaidDisplay.textContent = `€${totals.Paid.toFixed(2)}`;
   totalPendingDisplay.textContent = `€${totals.Pending.toFixed(2)}`;
   totalUnpaidDisplay.textContent = `€${totals.Unpaid.toFixed(2)}`;
 }
 
 /**
- * Shows or hides conditional form fieldds ('Streaming Name' or 'Other Type')
- * based on the selection in the 'Bill Type' dropdown.
+ * Handles changes in the 'Bill Type' dropdown, dynamically showing or hiding
+ * related input fields (e.g., 'Streaming Name' or 'Other Type').
  */
 function handleBillTypeChange() {
   const selectedValue = billTypeSelect.value;
 
-  // By default, reset and hide bith conditional containers
+  // By default, hide both conditional containers.
   streamingNameContainer.classList.add('d-none');
   otherTypeContainer.classList.add('d-none');
 
-  // Show the relevant container based on the selection
+  // Show the relevant container based on the selected bill type.
   if (selectedValue === 'Streaming') {
     streamingNameContainer.classList.remove('d-none');
   } else if (selectedValue === 'Other') {
@@ -213,103 +164,97 @@ function handleBillTypeChange() {
 
 
 /**
- * Deletes a bill from the state, saves the change to localStorage,
- * and triggers a UI update.
- * @param {string} id The unique ID of the bill to delete.
+ * Deletes a bill from the application state by delegating to BillManager.
+ * After deletion, it triggers a UI refresh.
+ * @param {string} id - The unique ID of the bill to delete.
  */
-function deleteBill(id) {
-  // Filter the bills array, creating a new array that excludes the bill with the matching id.
-  bills = bills.filter(bill => bill.id !== id);
-  // Save the newly modified array to localStorage.
-  saveBillsToLocalStorage();
-  // Re-render the UI to reflect the changes.
+async function deleteBill(id) {
+  // Optional: Add UI feedback here (e.g., show spinner, disable buttons)
+  console.log('Deleting bill (simulated delay)...'); // Temporary feedback
+
+  // Delegate the deletion logic (and internal saving) to the BillManager.
+  await appBillManager.deleteBill(id);
+  // Re-render the UI to reflect the changes in the bill list and totals.
   renderBills();
   calculateAndRenderTotal();
 }
 
 
 /**
- * Opens the edit modal and populates its form fields with the data from a specific bill.
- * @param {object} bill The bill object to be edited.
+ * Opens the "Edit Bill" modal and populates its form fields with data
+ * from the specified bill object.
+ * @param {object} bill - The bill object to be edited.
  */
 function openEditModal(bill) {
-  // 1. Fill the hidden ID input and visible form fields with the bill's existing data.
+  // Fill the hidden ID input (to identify the bill on submission)
+  // and other visible form fields with the bill's existing data.
   editBillIdInput.value = bill.id;
   editAmountInput.value = bill.amount.value;
   editStatusSelect.value = bill.status;
 
-  // 2. Programmatically open the Bootstrap modal using the instance we created.
+  // Programmatically show the Bootstrap modal.
   editModal.show();
 }
 
 
 /**
  * Handles the submission of the main 'Add Bill' form.
- * @param {Event} event The form submission event object provided by the browser.
+ * Delegates bill creation and saving to BillManager, then updates the UI.
+ * @param {Event} event - The form submission event object provided by the browser.
  */
-function handleSubmit(event) {
-  // 1. Prevent the default browser behavior of reloading the page.
-  event.preventDefault();
-  
-  // 2. Read all data from the form into a simple object.
+async function handleSubmit(event) {
+  // Prevent default page reload on form submission.
+  event.preventDefault(); 
+
+  // Read all form data into a simple object.
   const formData = new FormData(billForm);
   const billData = Object.fromEntries(formData.entries());
 
-  // 3. Consolidate the conditional 'name' fields into a single 'name' property.
+  // Consolidate conditional name fields.
   billData.name = billData['name-streaming'] || billData['name-other'];
 
-  // 4. Create a new Bill instance using our class constructor.
+  // Create a new Bill instance using the Bill class constructor.
   const newBill = new Bill(billData);
 
-  // 5. Add the new bill to our main state array.
-  bills.push(newBill);
-  saveBillsToLocalStorage();
+  // Delegate adding the new bill (and internal saving to localStorage)
+  // to the BillManager instance.
+  await appBillManager.addBill(newBill);
 
-  // 6. Log the results to the console for debugging purposes.
+  // Log the results for debugging.
   console.log('New bill added:', newBill);
-  console.log('All current bills:', bills);
-  
-  // 7. Reset the form for the next entry and hide conditional fields
+  console.log('All current bills managed by BillManager:', appBillManager.bills);
+
+  // Reset the form and hide any conditional fields.
   billForm.reset();
   handleBillTypeChange();
-  
-  // 8. Re-render the UI to show the new bill.
+
+  // Re-render the UI to show the new bill and updated totals.
   renderBills();
   calculateAndRenderTotal();
 }
 
 /**
  * Handles the submission of the 'Edit Bill' form within the modal.
- * @param {Event} event The form submission event object.
+ * Delegates bill updating and saving to BillManager, then updates the UI.
+ * @param {Event} event - The form submission event object.
  */
-function handleEditSubmit(event) {
-  // 1. Prevent the page from reloading.
-  event.preventDefault();
+async function handleEditSubmit(event) {
+  event.preventDefault(); // Prevent page reload.
 
-  // 2. Get the updated data from the modal's form.
+  // Optional: Add UI feedback here (e.g., show spinner, disable form fields)
+  console.log('Updating bill (simulated delay)...'); // Temporary feedback
+
+  // Get the updated data from the modal's form fields.
   const formData = new FormData(editBillForm);
   const updatedData = Object.fromEntries(formData.entries());
 
-  // 3. Find the bill in our main array and update it using .map().
-  bills = bills.map(bill => {
-    // If the bill's ID matches the one from the hidden form input...
-    if (bill.id === updatedData.id) {
-      // ...return a new object with the old properties spread (...) and the new ones overwritten.
-      return {
-        ...bill,
-        amount: {
-          ...bill.amount,
-          value: parseFloat(updatedData.amount)
-        },
-        status: updatedData.status
-      };
-    }
-    // Otherwise, return the bill unchanged.
-    return bill;
-  });
+  // Delegate the bill updating logic (and internal saving) to the BillManager.
+  await appBillManager.updateBill(updatedData);
 
-  // 4. Save the updated array, close the modal, and re-render the UI.
-  saveBillsToLocalStorage();
+  // Optional: Remove UI feedback here (e.g., hide spinner, re-enable fields)
+  console.log('Bill updated. Updating UI...'); // Temporary feedback
+
+  // Close the modal and re-render the UI to reflect the changes.
   editModal.hide();
   renderBills();
   calculateAndRenderTotal();
@@ -319,52 +264,43 @@ function handleEditSubmit(event) {
 // --- EVENT LISTENERS ---
 // Attaching our handler functions to specific events on our DOM elements.
 
-// Handles the submission of the main 'Add Bill' form.
 billForm.addEventListener('submit', handleSubmit);
-
-// Handles the submission of the 'Edit Bill' modal form.
 editBillForm.addEventListener('submit', handleEditSubmit);
-
-// Shows/hides conditional fields when the bill type dropdown changes.
 billTypeSelect.addEventListener('change', handleBillTypeChange);
 
-// Applies the selected sort order when the sort dropdown changes.
 sortBySelect.addEventListener('change', (event) => {
-  currentSort = event.target.value;
+  // Tell the BillManager to update its internal sort state based on dropdown.
+  appBillManager.setSort(event.target.value);
+  // Trigger a re-render to display bills with the new sort order.
   renderBills();
 });
 
-// Uses event delegation to handle clicks on dynamic 'edit' and 'delete' buttons.
+// Use event delegation on the main bills list container for 'Edit' and 'Delete' buttons.
 billsListContainer.addEventListener('click', (event) => {
-  // Check if a DELETE button was clicked
   if (event.target.classList.contains('delete-btn')) {
     const billId = event.target.dataset.billId;
-    deleteBill(billId);
-  }
-  // Check if an EDIT button was clicked
-  else if (event.target.classList.contains('edit-btn')) {
+    deleteBill(billId); // Calls the deleteBill function, which delegates to BillManager.
+  } else if (event.target.classList.contains('edit-btn')) {
     const billId = event.target.dataset.billId;
-    const billToEdit = bills.find(bill => bill.id === billId);
+    // Find the specific bill object from the BillManager's collection using its ID.
+    const billToEdit = appBillManager.bills.find(bill => bill.id === billId);
     if (billToEdit) {
-      openEditModal(billToEdit);
+      openEditModal(billToEdit); // Open the modal, pre-filling it with the bill's data.
     }
   }
 });
 
-
-// Applies the selected filter when a filter button is clicked.
 filterButtonsContainer.addEventListener('click', (event) => {
-  // Check if a button with the 'filter-btn' class was clicked
   if (event.target.classList.contains('filter-btn')) {
-    // This part handles the visual "active" state of the button
+    // Update visual "active" state of filter buttons.
     const buttons = filterButtonsContainer.querySelectorAll('.filter-btn');
     buttons.forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
-    
-    // This part updates our application's state
-    currentFilter = event.target.dataset.filter;
 
-    // Finally, this re-draws the list with the new filter applied
+    // Tell the BillManager to update its internal filter state.
+    appBillManager.setFilter(event.target.dataset.filter);
+
+    // Re-render the bills list to apply the new filter.
     renderBills();
   }
 });
@@ -375,12 +311,19 @@ filterButtonsContainer.addEventListener('click', (event) => {
 /**
  * The main entry point for the application.
  * This function is called once when the script first loads.
+ * It sets up the initial UI state based on loaded data.
  */
-function init() {
-  // Render the initial state of the bills list and totals from localStorage.
+async function init() {
+  // BillManager's constructor has already loaded the data from localStorage.
+  // Now, render the initial display of bills and totals.
+
+  // Await the asynchronous initialization of the BillManager.
+  // This ensures bills are loaded before rendering the UI.
+  await appBillManager.initialize(); // <--- Await the initialization
+
   renderBills();
   calculateAndRenderTotal();
 }
 
-// Kick off the application by calling the init function.
+// Kick off the application by calling the init function when the script loads.
 init();
