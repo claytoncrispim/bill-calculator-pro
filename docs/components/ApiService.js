@@ -18,6 +18,13 @@ export default class ApiService {
     _localStorageKey = 'myBills'; // Use the same key as before
 
     /**
+     * @private
+     * @property {boolean} _shouldFail - A flag to control error simulation.
+     * Set to 'true' to consistently simulate failures for testing.
+     */
+    _shouldFail = false; // Set to true to simulate API failures
+
+    /**
      * Simulates fetching bills from a backend API.
      * Resolves with an array of bill data after a delay.
      * @returns {Promise<Array<object>>} A promise that resolves with the bill data.
@@ -33,19 +40,32 @@ export default class ApiService {
         });
     }
 
-    /**
-     * Simulates saving bills to a backend API.
-     * Resolves after a delay, confirming the save.
-     * @param {Array<object>} billsData - The array of bill data to save.
-     * @returns {Promise<void>} A promise that resolves when the data is "saved".
-     */
+  /**
+   * Simulates saving bills to a backend API.
+   * Resolves after a delay, or rejects on simulated error.
+   * @param {Array<object>} billsData - The array of bill data to save.
+   * @returns {Promise<void>} A promise that resolves when the data is "saved" or rejects with an error.
+   */
     saveBills(billsData) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             setTimeout(() => {
+                if (this._shouldFail) { 
+                    console.error('API Service: Simulated network error during save!');
+                    reject(new Error('Simulated Network Error during save!')); // Reject the promise on failure
+                    return;
+                }
                 localStorage.setItem(this._localStorageKey, JSON.stringify(billsData));
                 console.log('API Service: Saved data (simulated)', billsData);
                 resolve();
             }, this._delay);
         });
+    }
+  /**
+   * @public
+   * Toggles the simulated failure state for testing purposes.
+   */
+    toggleFailure(state = !this._shouldFail) { 
+        this._shouldFail = state;
+        console.warn(`API Service: Simulated failure mode is now ${this._shouldFail ? 'ON' : 'OFF'}`);
     }
 }

@@ -45,6 +45,7 @@ export default class BillManager {
    * Saves the current 'bills' array to the backend via ApiService.
    * This method is asynchronous and should be awaited.
    * It maps Bill instances to plain objects for safe JSON stringification.
+   * Includes error handling for the save operation.
    * @async
    */
   async _saveBillsToLocalStorage() {
@@ -78,7 +79,7 @@ export default class BillManager {
         name: billData.name,
         paymentMethod: billData.paymentMethod,
         status: billData.status,
-        // When rehydrating, ensure amount.value and amount.currency are passed correctly.
+        // Access nested properties for re-creation
         amount: billData.amount ? billData.amount.value : 0, // Handle cases where amount might be missing
         currency: billData.amount ? billData.amount.currency : 'EUR' // Handle cases where currency might be missing
       }));
@@ -136,19 +137,18 @@ export default class BillManager {
   }
 
   /**
-   * Sets the internal filter state of the BillManager.
-   * No asynchronous operation or saving to localStorage is needed, as this is a view state.
-   * @param {'All' | 'Paid' | 'Unpaid' | 'Pending'} newFilter - The new filter status.
+   * Sets the loading state of the BillManager.
+   * @param {boolean} state - True if an operation is loading, false otherwise.
    */
+  setLoading(state) { // <--- ADD THIS METHOD
+    this.isLoading = state;
+    console.log(`BillManager: Loading state is now ${this.isLoading ? 'ON' : 'OFF'}`); // For debugging
+  }
+
   setFilter(newFilter) {
     this.currentFilter = newFilter;
   }
 
-  /**
-   * Sets the internal sort order state of the BillManager.
-   * No asynchronous operation or saving to localStorage is needed, as this is a view state.
-   * @param {'default' | 'amount-high-low' | 'amount-low-high' | 'name-az'} newSort - The new sort order.
-   */
   setSort(newSort) {
     this.currentSort = newSort;
   }
