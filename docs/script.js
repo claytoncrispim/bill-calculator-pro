@@ -5,7 +5,7 @@
  * It orchestrates interactions with the BillManager for all
  * data-related operations, acting as the UI layer.
  * @author [Clayton Crispim]
- * @version 9.0.0 (Refactored for Asynchronous OOP State Management)
+ * @version 10.0.0 (Implemented Asynchronous Error Handling with Toast Notifications)
  * @date 2025-06-26
  *
  * Distributed under the MIT License.
@@ -17,13 +17,10 @@ import BillManager from "./components/BillManager.js";
 
 
 // --- STATE MANAGEMENT INSTANCE ---
-// The single source of truth for the application's bill data is now
-// an instance of the BillManager class.
 const appBillManager = new BillManager();
 
 
 // --- DOM ELEMENTS ---
-// Caching references to frequently used DOM elements to improve performance.
 const billForm = document.querySelector('#bill-form');
 const billsListContainer = document.querySelector('#bills-list');
 const totalPaidDisplay = document.querySelector('#total-paid');
@@ -42,6 +39,11 @@ const editStatusSelect = document.querySelector('#edit-status');
 const editModal = new bootstrap.Modal(editModalEl);
 const loadingSpinner = document.querySelector('#loading-spinner');
 
+// --- NEW DOM ELEMENTS FOR NOTIFICATIONS ---
+const notificationToastEl = document.querySelector('#app-notification-toast');
+const notificationToastBody = document.querySelector('#toast-body');
+const notificationToast = new bootstrap.Toast(notificationToastEl);
+
 
 // --- FUNCTIONS FOR UI RENDERING AND EVENT HANDLING ---
 
@@ -55,6 +57,22 @@ function updateUIForLoading() {
   } else {
     loadingSpinner.classList.add('d-none');
   }
+}
+
+/**
+ * Displays a non-intrusive toast notification to the user.
+ * @param {string} message - The message to display in the notification.
+ * @param {boolean} isError - True if it's an error message, false for success.
+ */
+function showNotification(message, isError = false) {
+  notificationToastBody.textContent = message;
+  notificationToastEl.classList.remove('bg-success', 'bg-danger');
+  if (isError) {
+    notificationToastEl.classList.add('bg-danger');
+  } else {
+    notificationToastEl.classList.add('bg-success');
+  }
+  notificationToast.show();
 }
 
 /**
@@ -146,12 +164,13 @@ async function deleteBill(id) {
   try {
     console.log('Deleting bill (simulated delay)...');
     await appBillManager.deleteBill(id);
+    showNotification('Bill deleted successfully.');
     console.log('Bill deleted. Updating UI...');
     renderBills();
     calculateAndRenderTotal();
   } catch (error) {
     console.error("Error deleting bill:", error);
-    alert(`Failed to delete bill: ${error.message || 'Unknown error'}. Please try again.`);
+    showNotification(`Failed to delete bill: ${error.message || 'Unknown error'}.`, true);
     renderBills();
     calculateAndRenderTotal();
   } finally {
@@ -191,6 +210,7 @@ async function handleSubmit(event) {
   updateUIForLoading();
   try {
     await appBillManager.addBill(newBill);
+    showNotification('New bill added successfully.');
     console.log('New bill added:', newBill);
     console.log('All current bills managed by BillManager:', appBillManager.bills);
     billForm.reset();
@@ -199,7 +219,7 @@ async function handleSubmit(event) {
     calculateAndRenderTotal();
   } catch (error) {
     console.error('Error adding bill:', error);
-    alert(`Failed to add bill: ${error.message || 'Unknown error'}. Please try again.`);
+    showNotification(`Failed to add bill: ${error.message || 'Unknown error'}.`, true);
   } finally {
     appBillManager.setLoading(false);
     updateUIForLoading();
@@ -223,14 +243,14 @@ async function handleEditSubmit(event) {
     const updatedData = Object.fromEntries(formData.entries());
 
     await appBillManager.updateBill(updatedData);
-
+    showNotification('Bill updated successfully.');
     console.log('Bill updated. Updating UI...');
     editModal.hide();
     renderBills();
     calculateAndRenderTotal();
   } catch (error) {
     console.error("Error updating bill:", error);
-    alert(`Failed to update bill: ${error.message || 'Unknown error'}. Please try again.`);
+    showNotification(`Failed to update bill: ${error.message || 'Unknown error'}.`, true);
     editModal.hide();
     renderBills();
     calculateAndRenderTotal();
@@ -285,7 +305,7 @@ async function init() {
     calculateAndRenderTotal();
   } catch (error) {
     console.error("Initialization error:", error);
-    alert(`Failed to load initial data: ${error.message || 'Unknown error'}. Please refresh.`);
+    showNotification(`Failed to load initial data: ${error.message || 'Unknown error'}.`, true);
   } finally {
     appBillManager.setLoading(false);
     updateUIForLoading();
