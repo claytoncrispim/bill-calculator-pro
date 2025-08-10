@@ -27,7 +27,11 @@
                       <option value="Other">Other</option>
                   </select>
               </div>
-
+              <div id="loading-spinner" class="d-flex justify-content-center mt-5 d-none">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
               <div class="mb-3 d-none" id="streamingName-container">
                   <label for="streamingName" class="form-label">Streaming Service Name</label>
                   <input type="text" class="form-control" id="streamingName" name="name-streaming" placeholder="e.g., Netflix, Spotify">
@@ -100,47 +104,55 @@
                     <span id="total-unpaid" class="badge bg-danger">€0.00</span>
                 </h5>
             </div>
-            
             <div id="bills-list">
             </div>
         </div>
-    </div>
-</main>
-
-<div class="modal fade" id="editBillModal" tabindex="-1" aria-labelledby="editBillModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editBillModalLabel">Edit Bill</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form id="edit-bill-form">
-          <input type="hidden" id="edit-bill-id" name="id">
+    </main>
 
-          <div class="mb-3">
-            <label for="edit-amount" class="form-label">Amount</label>
-            <input type="number" class="form-control" id="edit-amount" name="amount" required step="0.01">
+    <div class="modal fade" id="editBillModal" tabindex="-1" aria-labelledby="editBillModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editBillModalLabel">Edit Bill</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="mb-3">
-            <label for="edit-status" class="form-label">Status</label>
-            <select class="form-select" id="edit-status" name="status" required>
-              <option value="Pending">Pending</option>
-              <option value="Paid">Paid</option>
-              <option value="Unpaid">Unpaid</option>
-            </select>
-          </div>
+          <div class="modal-body">
+            <form id="edit-bill-form">
+              <input type="hidden" id="edit-bill-id" name="id">
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+              <div class="mb-3">
+                <label for="edit-amount" class="form-label">Amount</label>
+                <input type="number" class="form-control" id="edit-amount" name="amount" required step="0.01">
+              </div>
+              <div class="mb-3">
+                <label for="edit-status" class="form-label">Status</label>
+                <select class="form-select" id="edit-status" name="status" required>
+                  <option value="Pending">Pending</option>
+                  <option value="Paid">Paid</option>
+                  <option value="Unpaid">Unpaid</option>
+                </select>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="script.js" defer></script>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="app-notification-toast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body" id="toast-body">
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>    
   </body>
 </html>

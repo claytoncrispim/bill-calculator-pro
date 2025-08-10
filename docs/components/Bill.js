@@ -1,9 +1,7 @@
-// src/components/Bill.js
-
 export default class Bill {
-  constructor({ type, name, paymentMethod, amount, currency, status }) {
-    // We use a unique ID to manage each bill later (e.g., for deleting)
-    this.id = Date.now().toString(); // Simple unique ID based on timestamp
+  constructor({ id, type, name, paymentMethod, amount, currency, status }) {
+    // Use the provided 'id' if it exists, otherwise generate a new one.
+    this.id = id || Date.now().toString(); // Simple unique ID based on timestamp
 
     this.type = type; // e.g., 'Energy', 'Broadband', 'Streaming'
     this.name = name; // Specifically for the streaming service name, e.g., 'Netflix'
