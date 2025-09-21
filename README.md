@@ -49,7 +49,7 @@ You need to have Node.js and npm installed on your machine. You can download the
     ```
 2.  **Navigate to the project directory**
     ```sh
-    cd your-repository-name
+    cd bill-calculator-pro
     ```
 3.  **Install NPM packages** (this will install `live-server`)
     ```sh
