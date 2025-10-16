@@ -45,7 +45,7 @@ You need to have Node.js and npm installed on your machine. You can download the
 
 1.  **Clone the repo**
     ```sh
-    git clone [https://github.com/claytoncrispim/bill-calculator-pro.git](https://github.com/claytoncrispim/bill-calculator-pro.git)
+    git clone https://github.com/claytoncrispim/bill-calculator-pro.git
     ```
 2.  **Navigate to the project directory**
     ```sh
