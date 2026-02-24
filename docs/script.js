@@ -24,7 +24,8 @@ const UI_LABELS = APP_CONFIG.ui?.labels || {};
 const APP_TITLE = APP_META.title || 'Bill Calculator';
 const APP_SUBTITLE = APP_META.subtitle || 'Manage your bills with ease';
 
-
+const THEME_NAME = APP_CONFIG.theme?.brandName || 'default';
+document.documentElement.setAttribute('data-theme', THEME_NAME); // Set here for early initialization
 
 
 // --- STATE MANAGEMENT INSTANCE ---
