@@ -1,0 +1,55 @@
+window.APP_CONFIG = Object.freeze({  
+  app: {
+    apiDelayMs: 500,
+    title: "Bill Calculator",
+    subtitle: "Manage your monthly expenses with ease.",
+    storageKey: "myBills", // keep same key to avoid breaking existing saved data
+    currency: {
+      defaultCode: "EUR",
+      supported: ["EUR", "USD", "GBP"]
+    }
+  },
+
+  options: {
+    billTypes: [
+      { value: "", label: "Select a type..." },
+      { value: "energy", label: "Energy" },
+      { value: "broadband", label: "Broadband" },
+      { value: "streaming", label: "Streaming" },
+      { value: "other", label: "Other" }
+    ],
+    paymentMethods: [
+      { value: "Direct Debit", label: "Direct Debit" },
+      { value: "Credit Card", label: "Credit Card" },
+      { value: "Debit Card", label: "Debit Card" },
+      { value: "Cash", label: "Cash" }
+    ],
+    statuses: [
+      { value: "Paid", label: "Paid" },
+      { value: "Pending", label: "Pending" },
+      { value: "Unpaid", label: "Unpaid" }
+    ],
+    sortOptions: [
+      { value: "default", label: "Default Order" },
+      { value: "amount-desc", label: "Amount (High to Low)" },
+      { value: "amount-asc", label: "Amount (Low to High)" },
+      { value: "name-asc", label: "Name (A-Z)" }
+    ]
+  },
+
+  ui: {
+    labels: {
+      addFormTitle: "Add a New Bill",
+      listTitle: "My Bills"
+    }
+  },
+
+  theme: {
+    // purely informational for now — CSS vars will control real styling
+    brandName: "default",
+    primary: "#0d6efd",
+    success: "#198754",
+    warning: "#ffc107",
+    danger: "#dc3545"
+  }
+});

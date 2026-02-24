@@ -15,7 +15,13 @@ export default class ApiService {
      * @property {string} _localStorageKey - The key used to store data in localStorage for simulation.
      * 
      */
-    _localStorageKey = 'myBills'; // Use the same key as before
+    _localStorageKey = window.APP_CONFIG.app?.storageKey || 'myBills'; // Use a configurable key or default to 'myBills'
+
+    /**
+     * @private
+     * @property {number} _delay - The simulated network delay in milliseconds.
+     */
+    _delay = window.APP_CONFIG.app?.apiDelayMs || 500; // Use a configurable delay or default to 0.5 second
 
     /**
      * @private
