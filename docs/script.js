@@ -15,6 +15,17 @@
 import Bill from "./components/Bill.js";
 import BillManager from "./components/BillManager.js";
 
+// --- CONFIGURATION ACCESSORS ---
+const APP_CONFIG = window.APP_CONFIG || {};
+
+const APP_META = APP_CONFIG.app || {};
+const UI_LABELS = APP_CONFIG.ui?.labels || {};
+
+const APP_TITLE = APP_META.title || 'Bill Calculator';
+const APP_SUBTITLE = APP_META.subtitle || 'Manage your bills with ease';
+
+
+
 
 // --- STATE MANAGEMENT INSTANCE ---
 const appBillManager = new BillManager();
