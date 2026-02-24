@@ -1,7 +1,7 @@
 window.APP_CONFIG = Object.freeze({  
   app: {
     apiDelayMs: 500,
-    title: "Bill Calculator",
+    title: "Bill Calculator Pro",
     subtitle: "Manage your monthly expenses with ease.",
     storageKey: "myBills", // keep same key to avoid breaking existing saved data
     currency: {

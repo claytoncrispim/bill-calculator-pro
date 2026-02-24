@@ -32,6 +32,12 @@ const appBillManager = new BillManager();
 
 
 // --- DOM ELEMENTS ---
+const appTitleEl = document.getElementById("app-title");
+const appSubtitleEl = document.getElementById("app-subtitle");
+
+if (appTitleEl) appTitleEl.textContent = APP_TITLE;
+if (appSubtitleEl) appSubtitleEl.textContent = APP_SUBTITLE;
+
 const billForm = document.querySelector('#bill-form');
 const billsListContainer = document.querySelector('#bills-list');
 const totalPaidDisplay = document.querySelector('#total-paid');
