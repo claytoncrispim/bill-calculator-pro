@@ -33,9 +33,11 @@ const appBillManager = new BillManager();
 
 
 // --- DOM ELEMENTS ---
+const pageTitleEl = document.getElementById("page-title");
 const appTitleEl = document.getElementById("app-title");
 const appSubtitleEl = document.getElementById("app-subtitle");
 
+if (pageTitleEl) pageTitleEl.textContent = APP_TITLE;
 if (appTitleEl) appTitleEl.textContent = APP_TITLE;
 if (appSubtitleEl) appSubtitleEl.textContent = APP_SUBTITLE;
 
