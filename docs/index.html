@@ -7,16 +7,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
-    <main class="container mt-5">
-    <header class="text-center mb-4">
-        <h1 id="app-title"></h1>
-        <p class="lead" id="app-subtitle"></p>
-    </header>
+    <main class="container mt-5" data-ui="app-shell">
+      <header class="text-center mb-4" data-ui="app-header">
+          <h1 data-ui="app-title" id="app-title"></h1>
+          <p class="lead" data-ui="app-subtitle" id="app-subtitle"></p>
+      </header>
 
-    <div class="row">
-        <div class="col-md-5">
-            <h2>Add a New Bill</h2>
-            <form id="bill-form" class="p-4 border rounded bg-light">
+    <div class="row" data-ui="layout-grid">
+        <div class="col-md-5" data-ui="form-column">
+            <h2 data-ui="form-section-title">Add a New Bill</h2>
+            <form id="bill-form" class="p-4 border rounded bg-light" data-ui="bill-form">
                 <div class="mb-3">
                   <label for="billType" class="form-label">Bill Type</label>
                   <select class="form-select" id="billType" name="type" required>
@@ -70,23 +70,23 @@
                       <option value="Unpaid">Unpaid</option>
                   </select>
               </div>
-                    <button type="submit" class="btn btn-primary w-100">Add Bill</button>
+              <button type="submit" class="btn btn-primary w-100" data-ui="add-bill-btn">Add Bill</button>
             </form>
         </div>
 
-        <div class="col-md-7">
-            <h2>My Bills</h2>
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-2">
-              <div id="filter-buttons-container" class="btn-group flex-wrap" role="group" aria-label="Bill filters">
+        <div class="col-md-7" data-ui="bills-column">
+            <h2 data-ui="bills-section-title">My Bills</h2>
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-2" data-ui="bills-toolbar">
+              <div id="filter-buttons-container" class="btn-group flex-wrap" role="group" aria-label="Bill filters" data-ui="filter-group">
                 <button type="button" class="btn btn-outline-primary active filter-btn" data-filter="All">All</button>
                 <button type="button" class="btn btn-outline-primary filter-btn" data-filter="Paid">Paid</button>
                 <button type="button" class="btn btn-outline-primary filter-btn" data-filter="Unpaid">Unpaid</button>
                 <button type="button" class="btn btn-outline-primary filter-btn" data-filter="Pending">Pending</button>
               </div>
 
-              <div class="d-flex align-items-center justify-content-md-end gap-2">
-                <label for="sort-by" class="form-label mb-0 text-nowrap">Sort By:</label>
-                <select class="form-select form-select-sm w-100 w-md-auto" id="sort-by">
+              <div class="d-flex align-items-center justify-content-md-end gap-2" data-ui="sort-controls">
+                <label for="sort-by" class="form-label mb-0 text-nowrap" data-ui="sort-label">Sort By:</label>
+                <select class="form-select form-select-sm w-100 w-md-auto" id="sort-by" data-ui="sort-select">
                   <option value="default">Default Order</option>
                   <option value="amount-high-low">Amount (High to Low)</option>
                   <option value="amount-low-high">Amount (Low to High)</option>
@@ -94,32 +94,32 @@
                 </select>
               </div>
             </div>
-            <div class="text-end mb-3">
-                <h5 class="mb-1">Paid: 
-                    <span id="total-paid" class="badge bg-success">€0.00</span>
+            <div class="text-end mb-3" data-ui="total-panel">
+                <h5 class="mb-1" data-ui="total-row">Paid: 
+                    <span id="total-paid" class="badge bg-success" data-ui="total-paid">€0.00</span>
                 </h5>
-                <h5 class="mb-1">Pending: 
-                    <span id="total-pending" class="badge bg-warning text-dark">€0.00</span>
+                <h5 class="mb-1" data-ui="total-row">Pending: 
+                    <span id="total-pending" class="badge bg-warning text-dark" data-ui="total-pending">€0.00</span>
                 </h5>
-                <h5 class="mb-1">Unpaid: 
-                    <span id="total-unpaid" class="badge bg-danger">€0.00</span>
+                <h5 class="mb-1" data-ui="total-row">Unpaid: 
+                    <span id="total-unpaid" class="badge bg-danger" data-ui="total-unpaid">€0.00</span>
                 </h5>
             </div>
-            <div id="bills-list">
+            <div id="bills-list" data-ui="bills-list">
             </div>
         </div>
       </div>
     </main>
 
-    <div class="modal fade" id="editBillModal" tabindex="-1" aria-labelledby="editBillModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
+    <div class="modal fade" id="editBillModal" tabindex="-1" aria-labelledby="editBillModalLabel" aria-hidden="true" data-ui="edit-modal">
+      <div class="modal-dialog" data-ui="edit-modal-dialog">
+        <div class="modal-content" data-ui="edit-modal-content">
+          <div class="modal-header" data-ui="edit-modal-header">
             <h5 class="modal-title" id="editBillModalLabel">Edit Bill</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            <form id="edit-bill-form">
+          <div class="modal-body" data-ui="edit-modal-body">
+            <form id="edit-bill-form" data-ui="edit-bill-form">
               <input type="hidden" id="edit-bill-id" name="id">
 
               <div class="mb-3">
@@ -135,7 +135,7 @@
                 </select>
               </div>
 
-              <div class="modal-footer">
+              <div class="modal-footer" data-ui="edit-modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
               </div>
@@ -147,10 +147,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./config/app-config.js"></script>
     <script type="module" src="./script.js" defer></script>
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="app-notification-toast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" data-ui="toast-container">
+      <div id="app-notification-toast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true" data-ui="notification-toast">
         <div class="d-flex">
-          <div class="toast-body" id="toast-body">
+          <div class="toast-body" id="toast-body" data-ui="toast-body">
           </div>
           <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
