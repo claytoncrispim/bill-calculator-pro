@@ -1,0 +1,129 @@
+:root {
+    /* Brand / theme tokens */
+    --app-bg: #f8f9fa;
+    --app-surface: #ffffff;
+    --app-surface-muted: #f8f9fa;
+    --app-text: #212529;
+    --app-text-muted: #6c757d;
+    --app-border: #dee2e6;
+
+    --app-primary: #0d6efd;
+    --app-primary-hover: #0b5ed7;
+    --app-primary-contrast: #ffffff;
+
+    --app-success: #198754;
+    --app-warning: #ffc107;
+    --app-danger: #dc3545;
+
+    --app-radius: 0.5rem;
+    --app-shadow-soft: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+
+    --app-shell-max-width: 1140px;
+    --app-section-gap: 1.5rem;
+}
+
+/* Base page */
+body {
+    background-color: var(--app-bg);
+    color: var(--app-text);
+}
+
+/* Main app shell */
+[data-ui="app-shell"] {
+    max-width: var(--app-shell-max-width);
+}
+
+/* Header hooks */
+[data-ui="app-title"] {
+    color: var(--app-text);
+}
+
+[data-ui="app-subtitle"] {
+    color: var(--app-text-muted);
+}
+
+/* Form surface */
+#bill-form {
+    background-color: var(--app-surface)!important;
+    border-color: var(--app-border) !important;    
+    border-radius: var(--app-radius);    
+}
+
+/* Generic card-like surface (bill cards, modal panels, etc. */
+.card,
+.modal-content {
+    border-color: var(--app-border);
+    border-radius: var(--app-radius);
+    box-shadow: var(--app-shadow-soft);
+}
+
+/* Form controls */
+.form-control,
+.form-select {
+    border-color: var(--app-border);
+    border-radius: calc(var(--app-radius) - 0.125rem);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: rgba(13, 110, 253, 0.35);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* Primary buttons */
+.btn-primary {
+    background-color: var(--app-primary);
+    border-color: var(--app-primary);
+    color: var(--app-primary-contrast);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--app-primary-hover);
+    border-color: var(--app-primary-hover);
+    color: var(--app-primary-contrast);
+}
+
+/* Active filter button */
+.btn-outline-primary.active,
+.btn-outline-primary:active {
+    background-color: var(--app-primary);
+    border-color: var(--app-primary);
+    color: var(--app-primary-contrast);
+}
+
+/* Badges that keep the semantic colors without tying them to tokens */
+.badge.bg-success {
+    background-color: var(--app-success)!important;
+}
+
+.badge.bg-warning {
+    background-color: var(--app-warning)!important;
+}
+
+.badge.bg-danger {
+    background-color: var(--app-danger)!important;
+}
+
+/* Toast */
+#app-notification-toast {
+    border-radius: var(--app-radius);
+    box-shadow: var(--app-shadow-soft);
+}
+
+/* Small responsive polish */
+@media (max-width: 767.98px) {
+    [data-ui="app-shell"] {
+        margin-top: 2rem !important;
+    }
+
+    h1#app-title,
+    [data-ui="app-title"] {
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    #bill-form,
+    .card{
+        margin-bottom: 1rem;
+    }
+}
