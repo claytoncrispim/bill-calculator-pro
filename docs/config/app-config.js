@@ -40,7 +40,9 @@ window.APP_CONFIG = Object.freeze({
   ui: {
     labels: {
       addFormTitle: "Add a New Bill",
-      listTitle: "My Bills"
+      listTitle: "My Bills",
+      emptyStateText: "No bills to display.",
+      addButton: "Add Bill"
     }
   },
 

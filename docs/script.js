@@ -24,6 +24,11 @@ const UI_LABELS = APP_CONFIG.ui?.labels || {};
 const APP_TITLE = APP_META.title || 'Bill Calculator';
 const APP_SUBTITLE = APP_META.subtitle || 'Manage your bills with ease';
 
+const FORM_SECTION_TITLE = UI_LABELS.addFormTitle || 'Add a New Bill';
+const LIST_SECTION_TITLE = UI_LABELS.listTitle || 'My Bills';
+const ADD_BUTTON_LABEL = UI_LABELS.addButton || 'Add Bill';
+const EMPTY_STATE_TEXT = UI_LABELS.emptyStateText || 'No bills to display.';
+
 const THEME_NAME = APP_CONFIG.theme?.brandName || 'default';
 document.documentElement.setAttribute('data-theme', THEME_NAME); // Set here for early initialization
 
@@ -33,13 +38,20 @@ const appBillManager = new BillManager();
 
 
 // --- DOM ELEMENTS ---
+// Cache references to frequently accessed DOM elements for easier customization and manipulation.
 const pageTitleEl = document.getElementById("page-title");
 const appTitleEl = document.getElementById("app-title");
 const appSubtitleEl = document.getElementById("app-subtitle");
+const formSectionTitleEl = document.querySelector('[data-ui="form-section-title"]');
+const addButtonEl = document.querySelector('[data-ui="add-bill-btn"]');
+const billsSectionTitleEl = document.querySelector('[data-ui="bills-section-title"]');
 
 if (pageTitleEl) pageTitleEl.textContent = APP_TITLE;
 if (appTitleEl) appTitleEl.textContent = APP_TITLE;
 if (appSubtitleEl) appSubtitleEl.textContent = APP_SUBTITLE;
+if (addButtonEl) addButtonEl.textContent = ADD_BUTTON_LABEL;
+if (formSectionTitleEl) formSectionTitleEl.textContent = FORM_SECTION_TITLE;
+if (billsSectionTitleEl) billsSectionTitleEl.textContent = LIST_SECTION_TITLE;
 
 const billForm = document.querySelector('#bill-form');
 const billsListContainer = document.querySelector('#bills-list');
@@ -106,8 +118,7 @@ function renderBills() {
   billsListContainer.innerHTML = '';
 
   if (billsToDisplay.length === 0) {
-    billsListContainer.innerHTML = '<p class="text-center text-muted">' +
-                                   'No bills to display.</p>';
+    billsListContainer.innerHTML = `<p class="text-center text-muted">${EMPTY_STATE_TEXT}</p>`;
     return;
   }
 
