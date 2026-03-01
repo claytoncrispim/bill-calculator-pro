@@ -1,3 +1,9 @@
+/**
+ * @file app-config.js
+ * @description App configuration object for Bill Calculator Pro. This centralizes all app settings, options, and UI text.
+ * @param {Object} window.APP_CONFIG - The global configuration object for the app.
+ * It is frozen to prevent accidental modifications at runtime.
+ */
 window.APP_CONFIG = Object.freeze({  
   app: {
     apiDelayMs: 500,
@@ -29,11 +35,11 @@ window.APP_CONFIG = Object.freeze({
       { value: "Pending", label: "Pending" },
       { value: "Unpaid", label: "Unpaid" }
     ],
-    sortOptions: [
-      { value: "default", label: "Default Order" },
-      { value: "amount-desc", label: "Amount (High to Low)" },
-      { value: "amount-asc", label: "Amount (Low to High)" },
-      { value: "name-asc", label: "Name (A-Z)" }
+    sortChoices: [
+      { value: "default", label: "Default Sort" },
+      { value: "amount-high-low", label: "Amount (High to Low)" },
+      { value: "amount-low-high", label: "Amount (Low to High)" },
+      { value: "name-az", label: "Name (A-Z)" }
     ]
   },
 

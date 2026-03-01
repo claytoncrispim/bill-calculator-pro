@@ -14,12 +14,14 @@
 // --- IMPORTS ---
 import Bill from "./components/Bill.js";
 import BillManager from "./components/BillManager.js";
+import renderSortChoices from "./tools/renderSortChoices.js";
 
 // --- CONFIGURATION ACCESSORS ---
 const APP_CONFIG = window.APP_CONFIG || {};
 
 const APP_META = APP_CONFIG.app || {};
 const UI_LABELS = APP_CONFIG.ui?.labels || {};
+const UI_OPTIONS = APP_CONFIG.options || {};
 
 const APP_TITLE = APP_META.title || 'Bill Calculator';
 const APP_SUBTITLE = APP_META.subtitle || 'Manage your bills with ease';
@@ -28,6 +30,7 @@ const FORM_SECTION_TITLE = UI_LABELS.addFormTitle || 'Add a New Bill';
 const LIST_SECTION_TITLE = UI_LABELS.listTitle || 'My Bills';
 const ADD_BUTTON_LABEL = UI_LABELS.addButton || 'Add Bill';
 const EMPTY_STATE_TEXT = UI_LABELS.emptyStateText || 'No bills to display.';
+const SORT_CHOICES = UI_OPTIONS.sortChoices || [];
 
 const THEME_NAME = APP_CONFIG.theme?.brandName || 'default';
 document.documentElement.setAttribute('data-theme', THEME_NAME); // Set here for early initialization
@@ -197,11 +200,21 @@ async function deleteBill(id) {
     await appBillManager.deleteBill(id);
     showNotification('Bill deleted successfully.');
     console.log('Bill deleted. Updating UI...');
+    renderSortChoices({ 
+      selEl: sortBySelect, 
+      sortChoices: SORT_CHOICES, 
+      manager: appBillManager 
+    });
     renderBills();
     calculateAndRenderTotal();
   } catch (error) {
     console.error("Error deleting bill:", error);
     showNotification(`Failed to delete bill: ${error.message || 'Unknown error'}.`, true);
+    renderSortChoices({ 
+      selEl: sortBySelect, 
+      sortChoices: SORT_CHOICES, 
+      manager: appBillManager 
+    });
     renderBills();
     calculateAndRenderTotal();
   } finally {
@@ -246,6 +259,11 @@ async function handleSubmit(event) {
     console.log('All current bills managed by BillManager:', appBillManager.bills);
     billForm.reset();
     handleBillTypeChange();
+    renderSortChoices({ 
+      selEl: sortBySelect, 
+      sortChoices: SORT_CHOICES, 
+      manager: appBillManager 
+    });
     renderBills();
     calculateAndRenderTotal();
   } catch (error) {
@@ -277,12 +295,22 @@ async function handleEditSubmit(event) {
     showNotification('Bill updated successfully.');
     console.log('Bill updated. Updating UI...');
     editModal.hide();
+    renderSortChoices({ 
+      selEl: sortBySelect, 
+      sortChoices: SORT_CHOICES, 
+      manager: appBillManager 
+    });
     renderBills();
     calculateAndRenderTotal();
   } catch (error) {
     console.error("Error updating bill:", error);
     showNotification(`Failed to update bill: ${error.message || 'Unknown error'}.`, true);
     editModal.hide();
+    renderSortChoices({ 
+      selEl: sortBySelect, 
+      sortChoices: SORT_CHOICES, 
+      manager: appBillManager 
+    });
     renderBills();
     calculateAndRenderTotal();
   } finally {
@@ -299,6 +327,11 @@ billTypeSelect.addEventListener('change', handleBillTypeChange);
 
 sortBySelect.addEventListener('change', (event) => {
   appBillManager.setSort(event.target.value);
+  renderSortChoices({ 
+    selEl: sortBySelect, 
+    sortChoices: SORT_CHOICES, 
+    manager: appBillManager 
+  });
   renderBills();
 });
 
@@ -321,6 +354,11 @@ filterButtonsContainer.addEventListener('click', (event) => {
     buttons.forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
     appBillManager.setFilter(event.target.dataset.filter);
+    renderSortChoices({ 
+      selEl: sortBySelect, 
+      sortChoices: SORT_CHOICES, 
+      manager: appBillManager 
+    });
     renderBills();
   }
 });
@@ -332,6 +370,11 @@ async function init() {
   updateUIForLoading();
   try {
     await appBillManager.initialize();
+    renderSortChoices({ 
+      selEl: sortBySelect, 
+      sortChoices: SORT_CHOICES, 
+      manager: appBillManager 
+    });
     renderBills();
     calculateAndRenderTotal();
   } catch (error) {
