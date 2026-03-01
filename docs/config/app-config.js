@@ -19,10 +19,10 @@ window.APP_CONFIG = Object.freeze({
   options: {
     billTypes: [
       { value: "", label: "Select a type..." },
-      { value: "energy", label: "Energy" },
-      { value: "broadband", label: "Broadband" },
-      { value: "streaming", label: "Streaming" },
-      { value: "other", label: "Other" }
+      { value: "Energy", label: "Energy" },
+      { value: "Broadband", label: "Broadband" },
+      { value: "Streaming", label: "Streaming" },
+      { value: "Other", label: "Other" }
     ],
     paymentMethods: [
       { value: "Direct Debit", label: "Direct Debit" },

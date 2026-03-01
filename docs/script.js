@@ -15,6 +15,7 @@
 import Bill from "./components/Bill.js";
 import BillManager from "./components/BillManager.js";
 import renderSortChoices from "./tools/renderSortChoices.js";
+import renderBillTypeChoices from "./tools/renderBillTypeChoices.js";
 
 // --- CONFIGURATION ACCESSORS ---
 const APP_CONFIG = window.APP_CONFIG || {};
@@ -31,6 +32,7 @@ const LIST_SECTION_TITLE = UI_LABELS.listTitle || 'My Bills';
 const ADD_BUTTON_LABEL = UI_LABELS.addButton || 'Add Bill';
 const EMPTY_STATE_TEXT = UI_LABELS.emptyStateText || 'No bills to display.';
 const SORT_CHOICES = UI_OPTIONS.sortChoices || [];
+const BILL_TYPE_CHOICES = UI_OPTIONS.billTypes || [];
 
 const THEME_NAME = APP_CONFIG.theme?.brandName || 'default';
 document.documentElement.setAttribute('data-theme', THEME_NAME); // Set here for early initialization
@@ -370,6 +372,10 @@ async function init() {
   updateUIForLoading();
   try {
     await appBillManager.initialize();
+    renderBillTypeChoices({ 
+      selEl: billTypeSelect, 
+      billTypes: BILL_TYPE_CHOICES 
+    });
     renderSortChoices({ 
       selEl: sortBySelect, 
       sortChoices: SORT_CHOICES, 
