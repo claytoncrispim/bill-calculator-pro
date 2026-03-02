@@ -17,6 +17,7 @@ import BillManager from "./components/BillManager.js";
 import renderSortChoices from "./tools/renderSortChoices.js";
 import renderBillTypeChoices from "./tools/renderBillTypeChoices.js";
 import renderStatusChoices from "./tools/renderStatusChoices.js";
+import renderPaymentMethodChoices from "./tools/renderPaymentMethodChoices.js";
 
 // --- CONFIGURATION ACCESSORS ---
 const APP_CONFIG = window.APP_CONFIG || {};
@@ -35,6 +36,7 @@ const EMPTY_STATE_TEXT = UI_LABELS.emptyStateText || 'No bills to display.';
 const SORT_CHOICES = UI_OPTIONS.sortChoices || [];
 const BILL_TYPE_CHOICES = UI_OPTIONS.billTypes || [];
 const STATUS_CHOICES = UI_OPTIONS.statuses || [];
+const PAYMENT_METHOD_CHOICES = UI_OPTIONS.paymentMethods || [];
 
 const THEME_NAME = APP_CONFIG.theme?.brandName || 'default';
 document.documentElement.setAttribute('data-theme', THEME_NAME); // Set here for early initialization
@@ -68,6 +70,7 @@ const totalUnpaidDisplay = document.querySelector('#total-unpaid');
 const filterButtonsContainer = document.querySelector('#filter-buttons-container');
 const billTypeSelect = document.querySelector('#billType');
 const sortBySelect = document.querySelector('#sort-by');
+const paymentMethodSelect = document.querySelector('#paymentMethod');
 const streamingNameContainer = document.querySelector('#streamingName-container');
 const otherTypeContainer = document.querySelector('#otherType-container');
 const statusSelect = document.querySelector('#status');
@@ -375,24 +378,33 @@ async function init() {
   updateUIForLoading();
   try {
     await appBillManager.initialize();
+    // Render all dynamic select options after data is loaded to ensure they reflect the current state and configuration
     renderBillTypeChoices({ 
       selEl: billTypeSelect, 
       billTypes: BILL_TYPE_CHOICES 
     });
-    console.log('App configuration loaded:', STATUS_CHOICES);
+
+    renderPaymentMethodChoices({
+      selEl: paymentMethodSelect,
+      paymentMethodChoices: PAYMENT_METHOD_CHOICES
+    });
+
     renderStatusChoices({
       selEl: statusSelect,
       statusChoices: STATUS_CHOICES
     });
+
     renderStatusChoices({
       selEl: editStatusSelect,
       statusChoices: STATUS_CHOICES
     });
+
     renderSortChoices({ 
       selEl: sortBySelect, 
       sortChoices: SORT_CHOICES, 
       manager: appBillManager 
     });
+
     renderBills();
     calculateAndRenderTotal();
   } catch (error) {
