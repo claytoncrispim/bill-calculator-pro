@@ -16,6 +16,7 @@ import Bill from "./components/Bill.js";
 import BillManager from "./components/BillManager.js";
 import renderSortChoices from "./tools/renderSortChoices.js";
 import renderBillTypeChoices from "./tools/renderBillTypeChoices.js";
+import renderStatusChoices from "./tools/renderStatusChoices.js";
 
 // --- CONFIGURATION ACCESSORS ---
 const APP_CONFIG = window.APP_CONFIG || {};
@@ -33,6 +34,7 @@ const ADD_BUTTON_LABEL = UI_LABELS.addButton || 'Add Bill';
 const EMPTY_STATE_TEXT = UI_LABELS.emptyStateText || 'No bills to display.';
 const SORT_CHOICES = UI_OPTIONS.sortChoices || [];
 const BILL_TYPE_CHOICES = UI_OPTIONS.billTypes || [];
+const STATUS_CHOICES = UI_OPTIONS.statuses || [];
 
 const THEME_NAME = APP_CONFIG.theme?.brandName || 'default';
 document.documentElement.setAttribute('data-theme', THEME_NAME); // Set here for early initialization
@@ -68,6 +70,7 @@ const billTypeSelect = document.querySelector('#billType');
 const sortBySelect = document.querySelector('#sort-by');
 const streamingNameContainer = document.querySelector('#streamingName-container');
 const otherTypeContainer = document.querySelector('#otherType-container');
+const statusSelect = document.querySelector('#status');
 const editModalEl = document.querySelector('#editBillModal');
 const editBillForm = document.querySelector('#edit-bill-form');
 const editBillIdInput = document.querySelector('#edit-bill-id');
@@ -375,6 +378,15 @@ async function init() {
     renderBillTypeChoices({ 
       selEl: billTypeSelect, 
       billTypes: BILL_TYPE_CHOICES 
+    });
+    console.log('App configuration loaded:', STATUS_CHOICES);
+    renderStatusChoices({
+      selEl: statusSelect,
+      statusChoices: STATUS_CHOICES
+    });
+    renderStatusChoices({
+      selEl: editStatusSelect,
+      statusChoices: STATUS_CHOICES
     });
     renderSortChoices({ 
       selEl: sortBySelect, 
