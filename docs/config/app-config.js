@@ -12,7 +12,7 @@ window.APP_CONFIG = Object.freeze({
     storageKey: "myBills", // keep same key to avoid breaking existing saved data
     currency: {
       defaultCode: "EUR",
-      supported: ["EUR", "USD", "GBP"]
+      supported: ["EUR", "USD", "BRL", "GBP"]
     }
   },
 

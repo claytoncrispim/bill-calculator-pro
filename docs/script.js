@@ -18,6 +18,7 @@ import renderSortChoices from "./tools/renderSortChoices.js";
 import renderBillTypeChoices from "./tools/renderBillTypeChoices.js";
 import renderStatusChoices from "./tools/renderStatusChoices.js";
 import renderPaymentMethodChoices from "./tools/renderPaymentMethodChoices.js";
+import renderCurrencyChoices from "./tools/renderCurrencyChoices.js";
 
 // --- CONFIGURATION ACCESSORS ---
 const APP_CONFIG = window.APP_CONFIG || {};
@@ -28,6 +29,9 @@ const UI_OPTIONS = APP_CONFIG.options || {};
 
 const APP_TITLE = APP_META.title || 'Bill Calculator';
 const APP_SUBTITLE = APP_META.subtitle || 'Manage your bills with ease';
+
+const CURRENCY_DEFAULT_CODE = APP_META.currency?.defaultCode || 'EUR';
+const CURRENCY_CHOICES = APP_META.currency?.supported || [];
 
 const FORM_SECTION_TITLE = UI_LABELS.addFormTitle || 'Add a New Bill';
 const LIST_SECTION_TITLE = UI_LABELS.listTitle || 'My Bills';
@@ -46,7 +50,7 @@ document.documentElement.setAttribute('data-theme', THEME_NAME); // Set here for
 const appBillManager = new BillManager();
 
 
-// --- DOM ELEMENTS ---
+// --- DOM REFERENCES ---
 // Cache references to frequently accessed DOM elements for easier customization and manipulation.
 const pageTitleEl = document.getElementById("page-title");
 const appTitleEl = document.getElementById("app-title");
@@ -69,6 +73,7 @@ const totalPendingDisplay = document.querySelector('#total-pending');
 const totalUnpaidDisplay = document.querySelector('#total-unpaid');
 const filterButtonsContainer = document.querySelector('#filter-buttons-container');
 const billTypeSelect = document.querySelector('#billType');
+const currencySelect = document.querySelector('#currency');
 const sortBySelect = document.querySelector('#sort-by');
 const paymentMethodSelect = document.querySelector('#paymentMethod');
 const streamingNameContainer = document.querySelector('#streamingName-container');
@@ -382,6 +387,12 @@ async function init() {
     renderBillTypeChoices({ 
       selEl: billTypeSelect, 
       billTypes: BILL_TYPE_CHOICES 
+    });
+    console.log('Bill currency choices from config:', CURRENCY_CHOICES);
+    renderCurrencyChoices({
+      selEl: currencySelect,
+      currencyChoices: CURRENCY_CHOICES,
+      defaultCode: CURRENCY_DEFAULT_CODE
     });
 
     renderPaymentMethodChoices({
