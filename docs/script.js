@@ -19,6 +19,7 @@ import renderBillTypeChoices from "./tools/renderBillTypeChoices.js";
 import renderStatusChoices from "./tools/renderStatusChoices.js";
 import renderPaymentMethodChoices from "./tools/renderPaymentMethodChoices.js";
 import renderCurrencyChoices from "./tools/renderCurrencyChoices.js";
+import renderFilterButtons from "./tools/renderFilterButtons.js";
 
 // --- CONFIGURATION ACCESSORS ---
 const APP_CONFIG = window.APP_CONFIG || {};
@@ -36,8 +37,9 @@ const CURRENCY_CHOICES = APP_META.currency?.supported || [];
 const FORM_SECTION_TITLE = UI_LABELS.addFormTitle || 'Add a New Bill';
 const LIST_SECTION_TITLE = UI_LABELS.listTitle || 'My Bills';
 const ADD_BUTTON_LABEL = UI_LABELS.addButton || 'Add Bill';
-const EMPTY_STATE_TEXT = UI_LABELS.emptyStateText || 'No bills to display.';
 const SORT_CHOICES = UI_OPTIONS.sortChoices || [];
+const EMPTY_STATE_TEXT = UI_LABELS.emptyStateText || 'No bills to display.';
+const FILTER_CHOICES = UI_OPTIONS.filterChoices || [];
 const BILL_TYPE_CHOICES = UI_OPTIONS.billTypes || [];
 const STATUS_CHOICES = UI_OPTIONS.statuses || [];
 const PAYMENT_METHOD_CHOICES = UI_OPTIONS.paymentMethods || [];
@@ -383,12 +385,13 @@ async function init() {
   updateUIForLoading();
   try {
     await appBillManager.initialize();
+    
     // Render all dynamic select options after data is loaded to ensure they reflect the current state and configuration
     renderBillTypeChoices({ 
       selEl: billTypeSelect, 
       billTypes: BILL_TYPE_CHOICES 
     });
-    console.log('Bill currency choices from config:', CURRENCY_CHOICES);
+    
     renderCurrencyChoices({
       selEl: currencySelect,
       currencyChoices: CURRENCY_CHOICES,
@@ -408,6 +411,12 @@ async function init() {
     renderStatusChoices({
       selEl: editStatusSelect,
       statusChoices: STATUS_CHOICES
+    });
+
+    renderFilterButtons({ 
+      containerEl: filterButtonsContainer, 
+      filterChoices: FILTER_CHOICES, 
+      manager: appBillManager 
     });
 
     renderSortChoices({ 

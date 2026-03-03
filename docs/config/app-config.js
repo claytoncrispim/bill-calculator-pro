@@ -35,6 +35,12 @@ window.APP_CONFIG = Object.freeze({
       { value: "Pending", label: "Pending" },
       { value: "Unpaid", label: "Unpaid" }
     ],
+    filterChoices: [
+      { value: "All", label: "All" },
+      { value: "Paid", label: "Paid" },
+      { value: "Unpaid", label: "Unpaid" },
+      { value: "Pending", label: "Pending" }      
+    ],
     sortChoices: [
       { value: "default", label: "Default Sort" },
       { value: "amount-high-low", label: "Amount (High to Low)" },
