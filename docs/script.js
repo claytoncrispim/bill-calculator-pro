@@ -44,6 +44,12 @@ const TOTALS_PAID_LABEL = UI_LABELS.totalsPaidLabel || 'Paid';
 const TOTALS_PENDING_LABEL = UI_LABELS.totalsPendingLabel || 'Pending';
 const TOTALS_UNPAID_LABEL = UI_LABELS.totalsUnpaidLabel || 'Unpaid';
 
+const EDIT_MODAL_TITLE = UI_LABELS.editModalTitle || 'Edit Bill';
+const EDIT_MODAL_AMOUNT_LABEL = UI_LABELS.editModalAmountLabel || 'Amount';
+const EDIT_MODAL_STATUS_LABEL = UI_LABELS.editModalStatusLabel || 'Status';
+const EDIT_MODAL_CLOSE_LABEL = UI_LABELS.editModalCloseLabel || 'Close';
+const EDIT_MODAL_SAVE_LABEL = UI_LABELS.editModalSaveLabel || 'Save Changes';
+
 const STATUS_BADGE_MAP = APP_CONFIG.ui?.statusBadgeMap || {
   "Paid": "success",
   "Pending": "warning",
@@ -102,6 +108,13 @@ const editStatusSelect = document.querySelector('#edit-status');
 const editModal = new bootstrap.Modal(editModalEl);
 const loadingSpinner = document.querySelector('#loading-spinner');
 
+// Modal text and label elements
+const editModalTitleEl = document.querySelector('[data-ui="edit-modal-title"]');
+const editModalAmountLabelEl = document.querySelector('[data-ui="edit-modal-amount-label"]');
+const editModalStatusLabelEl = document.querySelector('[data-ui="edit-modal-status-label"]');
+const editModalCloseBtnEl = document.querySelector('[data-ui="edit-modal-close-btn"]');
+const editModalSaveBtnEl = document.querySelector('[data-ui="edit-modal-save-btn"]');
+
 // Start up text assignments
 if (pageTitleEl) pageTitleEl.textContent = APP_TITLE;
 if (appTitleEl) appTitleEl.textContent = APP_TITLE;
@@ -112,6 +125,11 @@ if (billsSectionTitleEl) billsSectionTitleEl.textContent = LIST_SECTION_TITLE;
 if (totalPaidLabelEl) totalPaidLabelEl.textContent = TOTALS_PAID_LABEL;
 if (totalPendingLabelEl) totalPendingLabelEl.textContent = TOTALS_PENDING_LABEL;
 if (totalUnpaidLabelEl) totalUnpaidLabelEl.textContent = TOTALS_UNPAID_LABEL;
+if (editModalTitleEl) editModalTitleEl.textContent = EDIT_MODAL_TITLE;
+if (editModalAmountLabelEl) editModalAmountLabelEl.textContent = EDIT_MODAL_AMOUNT_LABEL;
+if (editModalStatusLabelEl) editModalStatusLabelEl.textContent = EDIT_MODAL_STATUS_LABEL;
+if (editModalCloseBtnEl) editModalCloseBtnEl.textContent = EDIT_MODAL_CLOSE_LABEL;
+if (editModalSaveBtnEl) editModalSaveBtnEl.textContent = EDIT_MODAL_SAVE_LABEL;
 
 // --- NEW DOM ELEMENTS FOR NOTIFICATIONS ---
 const notificationToastEl = document.querySelector('#app-notification-toast');

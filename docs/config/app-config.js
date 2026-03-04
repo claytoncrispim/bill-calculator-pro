@@ -51,7 +51,7 @@ window.APP_CONFIG = Object.freeze({
     ]
   },
 
-  // UI text, labels, and mappings for dynamic elements like status badges
+  // UI labels and text content for various elements in the app, allowing for easy updates and potential localization in the future
   ui: {
     labels: {
       addFormTitle: "Add a New Bill",
@@ -62,7 +62,12 @@ window.APP_CONFIG = Object.freeze({
       deleteButtonLabel: "Delete Bill",
       totalsPaidLabel: "Paid",
       totalsPendingLabel: "Pending",
-      totalsUnpaidLabel: "Unpaid"
+      totalsUnpaidLabel: "Unpaid",
+      editModalTitle: "Edit Bill",
+      editModalAmountLabel: "Amount",
+      editModalStatusLabel: "Status",
+      editModalCloseLabel: "Close",
+      editModalSaveLabel: "Save Changes"
     },
     statusBadgeMap: {
       "Paid": "success",

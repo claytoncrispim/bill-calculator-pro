@@ -119,7 +119,7 @@
       <div class="modal-dialog" data-ui="edit-modal-dialog">
         <div class="modal-content" data-ui="edit-modal-content">
           <div class="modal-header" data-ui="edit-modal-header">
-            <h5 class="modal-title" id="editBillModalLabel">Edit Bill</h5>
+            <h5 class="modal-title" id="editBillModalLabel" data-ui="edit-modal-title">Edit Bill</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body" data-ui="edit-modal-body">
@@ -127,11 +127,11 @@
               <input type="hidden" id="edit-bill-id" name="id">
 
               <div class="mb-3">
-                <label for="edit-amount" class="form-label">Amount</label>
+                <label for="edit-amount" class="form-label" data-ui="edit-modal-amount-label">Amount</label>
                 <input type="number" class="form-control" id="edit-amount" name="amount" required step="0.01">
               </div>
               <div class="mb-3">
-                <label for="edit-status" class="form-label">Status</label>
+                <label for="edit-status" class="form-label" data-ui="edit-modal-status-label">Status</label>
                 <select class="form-select" id="edit-status" name="status" required>
                   <option value="Pending">Pending</option>
                   <option value="Paid">Paid</option>
@@ -140,8 +140,8 @@
               </div>
 
               <div class="modal-footer" data-ui="edit-modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ui="edit-modal-close-btn">Close</button>
+                <button type="submit" class="btn btn-primary" data-ui="edit-modal-save-btn">Save Changes</button>
               </div>
             </form>
           </div>
