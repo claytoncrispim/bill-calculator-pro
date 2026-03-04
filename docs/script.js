@@ -37,8 +37,12 @@ const CURRENCY_CHOICES = APP_META.currency?.supported || [];
 const FORM_SECTION_TITLE = UI_LABELS.addFormTitle || 'Add a New Bill';
 const LIST_SECTION_TITLE = UI_LABELS.listTitle || 'My Bills';
 const ADD_BUTTON_LABEL = UI_LABELS.addButton || 'Add Bill';
-const SORT_CHOICES = UI_OPTIONS.sortChoices || [];
 const EMPTY_STATE_TEXT = UI_LABELS.emptyStateText || 'No bills to display.';
+const TOTALS_PAID_LABEL = UI_LABELS.totalsPaidLabel || 'Paid';
+const TOTALS_PENDING_LABEL = UI_LABELS.totalsPendingLabel || 'Pending';
+const TOTALS_UNPAID_LABEL = UI_LABELS.totalsUnpaidLabel || 'Unpaid';
+
+const SORT_CHOICES = UI_OPTIONS.sortChoices || [];
 const FILTER_CHOICES = UI_OPTIONS.filterChoices || [];
 const BILL_TYPE_CHOICES = UI_OPTIONS.billTypes || [];
 const STATUS_CHOICES = UI_OPTIONS.statuses || [];
@@ -60,19 +64,14 @@ const appSubtitleEl = document.getElementById("app-subtitle");
 const formSectionTitleEl = document.querySelector('[data-ui="form-section-title"]');
 const addButtonEl = document.querySelector('[data-ui="add-bill-btn"]');
 const billsSectionTitleEl = document.querySelector('[data-ui="bills-section-title"]');
-
-if (pageTitleEl) pageTitleEl.textContent = APP_TITLE;
-if (appTitleEl) appTitleEl.textContent = APP_TITLE;
-if (appSubtitleEl) appSubtitleEl.textContent = APP_SUBTITLE;
-if (addButtonEl) addButtonEl.textContent = ADD_BUTTON_LABEL;
-if (formSectionTitleEl) formSectionTitleEl.textContent = FORM_SECTION_TITLE;
-if (billsSectionTitleEl) billsSectionTitleEl.textContent = LIST_SECTION_TITLE;
-
 const billForm = document.querySelector('#bill-form');
 const billsListContainer = document.querySelector('#bills-list');
 const totalPaidDisplay = document.querySelector('#total-paid');
 const totalPendingDisplay = document.querySelector('#total-pending');
 const totalUnpaidDisplay = document.querySelector('#total-unpaid');
+const totalPaidLabelEl = document.querySelector('[data-ui="total-paid-label"]');
+const totalPendingLabelEl = document.querySelector('[data-ui="total-pending-label"]');
+const totalUnpaidLabelEl = document.querySelector('[data-ui="total-unpaid-label"]');
 const filterButtonsContainer = document.querySelector('#filter-buttons-container');
 const billTypeSelect = document.querySelector('#billType');
 const currencySelect = document.querySelector('#currency');
@@ -88,6 +87,17 @@ const editAmountInput = document.querySelector('#edit-amount');
 const editStatusSelect = document.querySelector('#edit-status');
 const editModal = new bootstrap.Modal(editModalEl);
 const loadingSpinner = document.querySelector('#loading-spinner');
+
+// Start up text assignments
+if (pageTitleEl) pageTitleEl.textContent = APP_TITLE;
+if (appTitleEl) appTitleEl.textContent = APP_TITLE;
+if (appSubtitleEl) appSubtitleEl.textContent = APP_SUBTITLE;
+if (addButtonEl) addButtonEl.textContent = ADD_BUTTON_LABEL;
+if (formSectionTitleEl) formSectionTitleEl.textContent = FORM_SECTION_TITLE;
+if (billsSectionTitleEl) billsSectionTitleEl.textContent = LIST_SECTION_TITLE;
+if (totalPaidLabelEl) totalPaidLabelEl.textContent = TOTALS_PAID_LABEL;
+if (totalPendingLabelEl) totalPendingLabelEl.textContent = TOTALS_PENDING_LABEL;
+if (totalUnpaidLabelEl) totalUnpaidLabelEl.textContent = TOTALS_UNPAID_LABEL;
 
 // --- NEW DOM ELEMENTS FOR NOTIFICATIONS ---
 const notificationToastEl = document.querySelector('#app-notification-toast');

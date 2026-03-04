@@ -1,7 +1,7 @@
 :root {
     /* Brand / theme tokens */
-    --app-bg: #f8f9fa;
-    --app-surface: #ffffff;
+    --app-bg: #ffffff;
+    --app-surface: #f8f9fa;
     --app-surface-muted: #f8f9fa;
     --app-text: #212529;
     --app-text-muted: #6c757d;
