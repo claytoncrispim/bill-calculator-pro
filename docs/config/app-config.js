@@ -58,6 +58,8 @@ window.APP_CONFIG = Object.freeze({
       listTitle: "My Bills",
       emptyStateText: "No bills to display.",
       addButton: "Add Bill",
+      editButtonLabel: "Edit",
+      deleteButtonLabel: "Delete Bill",
       totalsPaidLabel: "Paid",
       totalsPendingLabel: "Pending",
       totalsUnpaidLabel: "Unpaid"

@@ -37,6 +37,8 @@ const CURRENCY_CHOICES = APP_META.currency?.supported || [];
 const FORM_SECTION_TITLE = UI_LABELS.addFormTitle || 'Add a New Bill';
 const LIST_SECTION_TITLE = UI_LABELS.listTitle || 'My Bills';
 const ADD_BUTTON_LABEL = UI_LABELS.addButton || 'Add Bill';
+const EDIT_BUTTON_LABEL = UI_LABELS.editButtonLabel || 'Edit';
+const DELETE_BUTTON_LABEL = UI_LABELS.deleteButtonLabel || 'Delete Bill';
 const EMPTY_STATE_TEXT = UI_LABELS.emptyStateText || 'No bills to display.';
 const TOTALS_PAID_LABEL = UI_LABELS.totalsPaidLabel || 'Paid';
 const TOTALS_PENDING_LABEL = UI_LABELS.totalsPendingLabel || 'Pending';
@@ -181,6 +183,7 @@ function renderBills() {
     return;
   }
 
+  // Bills Cards
   const billsHtml = billsToDisplay.map(bill => {
     const displayName = bill.name || bill.type;
     return `
@@ -200,10 +203,10 @@ function renderBills() {
             <strong>Payment Method:</strong> ${bill.paymentMethod}
           </p>
           <button class="btn btn-outline-secondary btn-sm edit-btn me-2" data-bill-id="${bill.id}">
-            Edit
+            ${EDIT_BUTTON_LABEL}
           </button>
           <button class="btn btn-outline-danger btn-sm delete-btn" data-bill-id="${bill.id}">
-            Delete Bill
+            ${DELETE_BUTTON_LABEL}
           </button>
         </div>
       </div>
