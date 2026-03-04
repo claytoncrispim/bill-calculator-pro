@@ -19,7 +19,7 @@
             <h2 data-ui="form-section-title">Add a New Bill</h2>
             <form id="bill-form" class="p-4 border rounded bg-light" data-ui="bill-form">
                 <div class="mb-3">
-                  <label for="billType" class="form-label">Bill Type</label>
+                  <label for="billType" class="form-label" data-ui="billtype-label">Bill Type</label>
                   <select class="form-select" id="billType" name="type" required>
                       <option value="" selected disabled>Select a type...</option>
                       <option value="Energy">Energy</option>
@@ -38,12 +38,12 @@
                   <input type="text" class="form-control" id="streamingName" name="name-streaming" placeholder="e.g., Netflix, Spotify">
               </div>
               <div class="mb-3 d-none" id="otherType-container">
-                    <label for="otherTypeName" class="form-label">Specify Bill Type</label>
+                    <label for="otherTypeName" class="form-label" data-ui="other-type-label">Specify Bill Type</label>
                     <input type="text" class="form-control" id="otherTypeName" name="name-other" placeholder="e.g., Gas, Mortgage">
               </div>
 
               <div class="mb-3">
-                  <label for="amount" class="form-label">Amount</label>
+                  <label for="amount" class="form-label" data-ui="amount-label">Amount</label>
                   <div class="input-group">
                       <select class="form-select" style="max-width: 80px;" id="currency" name="currency">
                           <option>EUR</option>
@@ -55,7 +55,7 @@
               </div>
 
               <div class="mb-3">
-                  <label for="paymentMethod" class="form-label">Payment Method</label>
+                  <label for="paymentMethod" class="form-label" data-ui="payment-method-label">Payment Method</label>
                   <select class="form-select" id="paymentMethod" name="paymentMethod" required>
                       <option value="Direct Debit">Direct Debit</option>
                       <option value="Credit Card">Credit Card</option>
@@ -64,7 +64,7 @@
               </div>
 
               <div class="mb-3">
-                  <label for="status" class="form-label">Status</label>
+                  <label for="status" class="form-label" data-ui="status-label">Status</label>
                   <select class="form-select" id="status" name="status" required>
                       <option value="Pending">Pending</option>
                       <option value="Paid">Paid</option>
@@ -86,7 +86,7 @@
               </div>
 
               <div class="d-flex align-items-center justify-content-md-end gap-2" data-ui="sort-controls">
-                <label for="sort-by" class="form-label mb-0 text-nowrap" data-ui="sort-label">Sort By:</label>
+                <label for="sort-by" class="form-label mb-0 text-nowrap" data-ui="sort-by-label">Sort By:</label>
                 <select class="form-select form-select-sm w-100 w-md-auto" id="sort-by" data-ui="sort-select">
                   <option value="default">Default Order</option>
                   <option value="amount-high-low">Amount (High to Low)</option>

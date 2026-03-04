@@ -36,6 +36,12 @@ const CURRENCY_CHOICES = APP_META.currency?.supported || [];
 
 const FORM_SECTION_TITLE = UI_LABELS.addFormTitle || 'Add a New Bill';
 const LIST_SECTION_TITLE = UI_LABELS.listTitle || 'My Bills';
+const BILLTYPE_LABEL = UI_LABELS.billtypeLabel || 'Bill Type';
+const OTHER_TYPE_LABEL = UI_LABELS.otherTypeLabel || 'Specify Bill Type';
+const AMOUNT_LABEL = UI_LABELS.amountLabel || 'Amount';
+const PAYMENT_METHOD_LABEL = UI_LABELS.paymentMethodLabel || 'Payment Method';
+const STATUS_LABEL = UI_LABELS.statusLabel || 'Status';
+const SORT_BY_LABEL = UI_LABELS.sortByLabel || 'Sort By:';
 const ADD_BUTTON_LABEL = UI_LABELS.addButton || 'Add Bill';
 const EDIT_BUTTON_LABEL = UI_LABELS.editButtonLabel || 'Edit';
 const DELETE_BUTTON_LABEL = UI_LABELS.deleteButtonLabel || 'Delete Bill';
@@ -82,6 +88,12 @@ const pageTitleEl = document.getElementById("page-title");
 const appTitleEl = document.getElementById("app-title");
 const appSubtitleEl = document.getElementById("app-subtitle");
 const formSectionTitleEl = document.querySelector('[data-ui="form-section-title"]');
+const billTypeLabelEl = document.querySelector('[data-ui="billtype-label"]');
+const otherTypeLabelEl = document.querySelector('[data-ui="other-type-label"]');
+const amountLabelEl = document.querySelector('[data-ui="amount-label"]');
+const paymentMethodLabelEl = document.querySelector('[data-ui="payment-method-label"]');
+const statusLabelEl = document.querySelector('[data-ui="status-label"]');
+const sortByLabelEl = document.querySelector('[data-ui="sort-by-label"]');
 const addButtonEl = document.querySelector('[data-ui="add-bill-btn"]');
 const billsSectionTitleEl = document.querySelector('[data-ui="bills-section-title"]');
 const billForm = document.querySelector('#bill-form');
@@ -121,6 +133,12 @@ if (appTitleEl) appTitleEl.textContent = APP_TITLE;
 if (appSubtitleEl) appSubtitleEl.textContent = APP_SUBTITLE;
 if (addButtonEl) addButtonEl.textContent = ADD_BUTTON_LABEL;
 if (formSectionTitleEl) formSectionTitleEl.textContent = FORM_SECTION_TITLE;
+if (billTypeLabelEl) billTypeLabelEl.textContent = BILLTYPE_LABEL;
+if (otherTypeLabelEl) otherTypeLabelEl.textContent = OTHER_TYPE_LABEL;
+if (amountLabelEl) amountLabelEl.textContent = AMOUNT_LABEL;
+if (paymentMethodLabelEl) paymentMethodLabelEl.textContent = PAYMENT_METHOD_LABEL;
+if (statusLabelEl) statusLabelEl.textContent = STATUS_LABEL;
+if (sortByLabelEl) sortByLabelEl.textContent = SORT_BY_LABEL;
 if (billsSectionTitleEl) billsSectionTitleEl.textContent = LIST_SECTION_TITLE;
 if (totalPaidLabelEl) totalPaidLabelEl.textContent = TOTALS_PAID_LABEL;
 if (totalPendingLabelEl) totalPendingLabelEl.textContent = TOTALS_PENDING_LABEL;
@@ -131,7 +149,7 @@ if (editModalStatusLabelEl) editModalStatusLabelEl.textContent = EDIT_MODAL_STAT
 if (editModalCloseBtnEl) editModalCloseBtnEl.textContent = EDIT_MODAL_CLOSE_LABEL;
 if (editModalSaveBtnEl) editModalSaveBtnEl.textContent = EDIT_MODAL_SAVE_LABEL;
 
-// --- NEW DOM ELEMENTS FOR NOTIFICATIONS ---
+// --- DOM ELEMENTS FOR NOTIFICATIONS ---
 const notificationToastEl = document.querySelector('#app-notification-toast');
 const notificationToastBody = document.querySelector('#toast-body');
 const notificationToast = new bootstrap.Toast(notificationToastEl);

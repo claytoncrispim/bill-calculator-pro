@@ -56,6 +56,12 @@ window.APP_CONFIG = Object.freeze({
     labels: {
       addFormTitle: "Add a New Bill",
       listTitle: "My Bills",
+      billtypeLabel: "Bill Type",
+      otherTypeLabel: "Specify Bill Type",
+      amountLabel: "Amount",
+      paymentMethodLabel: "Payment Method",
+      statusLabel: "Status",
+      sortByLabel: "Sort By",
       emptyStateText: "No bills to display.",
       addButton: "Add Bill",
       editButtonLabel: "Edit",
