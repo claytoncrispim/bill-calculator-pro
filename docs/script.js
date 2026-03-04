@@ -48,6 +48,12 @@ const STATUS_BADGE_MAP = APP_CONFIG.ui?.statusBadgeMap || {
   "Unpaid": "danger"
 };
 
+const TOTALS_BADGE_MAP = APP_CONFIG.ui?.totalsBadgeMap || {
+  "Paid": "success",
+  "Pending": "warning",
+  "Unpaid": "danger"
+};
+
 const SORT_CHOICES = UI_OPTIONS.sortChoices || [];
 const FILTER_CHOICES = UI_OPTIONS.filterChoices || [];
 const BILL_TYPE_CHOICES = UI_OPTIONS.billTypes || [];
@@ -139,6 +145,26 @@ function showNotification(message, isError = false) {
     notificationToastEl.classList.add('bg-success');
   }
   notificationToast.show();
+}
+
+/**
+ * Applies the appropriate badge classes to the total amount displays
+ * based on their status (Paid, Pending, Unpaid) using the configuration
+ * defined in APP_CONFIG.
+ */
+function applyTotalsBadgeClasses() {
+  if(totalPaidDisplay) {
+    totalPaidDisplay.className = `badge bg-${TOTALS_BADGE_MAP.Paid || 'secondary'}`;
+  }
+  if(totalPendingDisplay) {
+    const pendingClass = TOTALS_BADGE_MAP.Pending || 'secondary';
+    totalPendingDisplay.className = `
+      badge bg-${pendingClass}${pendingClass === 'warning' ? ' text-dark' : ""}`;
+  }
+  if(totalUnpaidDisplay) {
+    const unpaidClass = TOTALS_BADGE_MAP.Unpaid || 'secondary';
+    totalUnpaidDisplay.className = `badge bg-${unpaidClass}`;
+  }
 }
 
 /**
@@ -440,6 +466,7 @@ async function init() {
       manager: appBillManager 
     });
 
+    applyTotalsBadgeClasses();
     renderBills();
     calculateAndRenderTotal();
   } catch (error) {

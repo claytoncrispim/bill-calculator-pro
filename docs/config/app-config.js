@@ -66,6 +66,11 @@ window.APP_CONFIG = Object.freeze({
       "Paid": "success",
       "Pending": "warning",
       "Unpaid": "danger"
+    },
+    totalsBadgeMap: {
+      "Paid": "success",
+      "Pending": "warning",
+      "Unpaid": "danger"
     }
   },
 
