@@ -42,6 +42,12 @@ const TOTALS_PAID_LABEL = UI_LABELS.totalsPaidLabel || 'Paid';
 const TOTALS_PENDING_LABEL = UI_LABELS.totalsPendingLabel || 'Pending';
 const TOTALS_UNPAID_LABEL = UI_LABELS.totalsUnpaidLabel || 'Unpaid';
 
+const STATUS_BADGE_MAP = APP_CONFIG.ui?.statusBadgeMap || {
+  "Paid": "success",
+  "Pending": "warning",
+  "Unpaid": "danger"
+};
+
 const SORT_CHOICES = UI_OPTIONS.sortChoices || [];
 const FILTER_CHOICES = UI_OPTIONS.filterChoices || [];
 const BILL_TYPE_CHOICES = UI_OPTIONS.billTypes || [];
@@ -141,7 +147,6 @@ function showNotification(message, isError = false) {
  * reflects the current application state.
  */
 function renderBills() {
-  const statusColors = { Paid: 'success', Unpaid: 'danger', Pending: 'warning' };
   const billsToDisplay = appBillManager.getDisplayBills();
   billsListContainer.innerHTML = '';
 
@@ -160,7 +165,7 @@ function renderBills() {
               <h5 class="card-title">${displayName}</h5>
               <h6 class="card-subtitle mb-2 text-muted">${bill.type} Bill</h6>
             </div>
-            <span class="badge bg-${statusColors[bill.status]}">${bill.status}</span>
+            <span class="badge bg-${STATUS_BADGE_MAP[bill.status] || 'secondary'}">${bill.status}</span>
           </div>
           <p class="card-text">
             <strong>Amount:</strong> ${bill.amount.value.toFixed(2)} ${bill.amount.currency}

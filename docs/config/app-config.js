@@ -5,6 +5,7 @@
  * It is frozen to prevent accidental modifications at runtime.
  */
 window.APP_CONFIG = Object.freeze({  
+  // general app settings and metadata
   app: {
     apiDelayMs: 500,
     title: "Bill Calculator Pro",
@@ -16,6 +17,7 @@ window.APP_CONFIG = Object.freeze({
     }
   },
 
+  // Options for dropdowns, filters, and other UI elements that require predefined choices
   options: {
     billTypes: [
       { value: "", label: "Select a type..." },
@@ -49,6 +51,7 @@ window.APP_CONFIG = Object.freeze({
     ]
   },
 
+  // UI text, labels, and mappings for dynamic elements like status badges
   ui: {
     labels: {
       addFormTitle: "Add a New Bill",
@@ -58,9 +61,15 @@ window.APP_CONFIG = Object.freeze({
       totalsPaidLabel: "Paid",
       totalsPendingLabel: "Pending",
       totalsUnpaidLabel: "Unpaid"
+    },
+    statusBadgeMap: {
+      "Paid": "success",
+      "Pending": "warning",
+      "Unpaid": "danger"
     }
   },
 
+  // Theme settings for the application - currently informational, but can be expanded to control actual styling in the future
   theme: {
     // purely informational for now — CSS vars will control real styling
     brandName: "default",
