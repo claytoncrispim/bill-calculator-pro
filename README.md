@@ -60,3 +60,6 @@ You need to have Node.js and npm installed on your machine. You can download the
     npm start
     ```
     This will open the application in your default browser.
+
+## Customization
+You can find the **customization guide** for labels, options, badge maps, storage key, defaults, and CSS variables for branding in [CUSTOMIZATION.md](./CUSTOMIZATION.md).
